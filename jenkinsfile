@@ -1,11 +1,20 @@
 pipeline {
-    agent {
-        docker { image 'python:latest' }
-    }
+    agent any
+
     stages {
-        stage('Build') {
+        stage('Checkout') {
             steps {
-                git
+                checkout scmGit(branches: [[name: '*/union-intersect-minus-using_oops']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/prjpracticeteam/python_project_using_docker.git']])
+            }
+        }
+        stage('Pull code'){
+            steps{
+                git branch: 'union-intersect-minus-using_oops', url: 'https://github.com/prjpracticeteam/python_project_using_docker.git'
+            }
+        }
+        stage('Running image'){
+            steps{
+                sh 'docker build .'
             }
         }
     }
